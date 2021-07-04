@@ -1,9 +1,21 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>create-category</ion-title>
+    <ion-title>Create Category</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="onClose()" class="close" >
+      <ion-icon name="close-circle-outline"></ion-icon>
+    </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-
+<ion-content class="ion-padding">
+  <ion-label *ngIf="paramData && paramData.name" class="label1">Add Category Under of <span> {{ this.paramData.name}}</span></ion-label>
+  <ion-label  *ngIf="!(paramData && paramData.name)" class="label1">Add Category Main Category <span> {{ this.paramData.name}}</span></ion-label>
+  <ion-item>
+    <ion-input placeholder="Enter category name" [(ngModel)]="name"></ion-input>
+  </ion-item>
+  <ion-button (click)="onClose()">Cancel</ion-button>
+  <ion-button (click)="onCreate()">Save</ion-button>
+ 
 </ion-content>

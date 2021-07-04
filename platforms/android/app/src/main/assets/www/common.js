@@ -438,6 +438,170 @@ const openURL = async (url, ev, direction, animation) => {
 
 
 
+/***/ }),
+
+/***/ 6060:
+/*!*******************************************************!*\
+  !*** ./src/app/pages/cat-details/cat-details.page.ts ***!
+  \*******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "CatDetailsPage": () => (/* binding */ CatDetailsPage)
+/* harmony export */ });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! tslib */ 4762);
+/* harmony import */ var _raw_loader_cat_details_page_html__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !raw-loader!./cat-details.page.html */ 473);
+/* harmony import */ var _cat_details_page_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./cat-details.page.scss */ 4520);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ 7716);
+/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ionic/angular */ 476);
+/* harmony import */ var src_app_services_database_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/services/database.service */ 4382);
+/* harmony import */ var _create_category_create_category_page__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../create-category/create-category.page */ 4829);
+var CatDetailsPage_1;
+
+
+
+
+
+
+
+let CatDetailsPage = CatDetailsPage_1 = class CatDetailsPage {
+    constructor(db, modalCtrl, navParams, alertController) {
+        this.db = db;
+        this.modalCtrl = modalCtrl;
+        this.navParams = navParams;
+        this.alertController = alertController;
+        this.paramData = {
+            id: '',
+            name: '',
+            child: ''
+        };
+    }
+    ngOnInit() {
+        this.paramData = this.navParams.data.paramData;
+    }
+    onClose() {
+        this.modalCtrl.dismiss();
+    }
+    openModal(item) {
+        return (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__awaiter)(this, void 0, void 0, function* () {
+            const modal = yield this.modalCtrl.create({
+                component: CatDetailsPage_1,
+                componentProps: {
+                    "paramData": item,
+                }
+            });
+            modal.onDidDismiss().then((dataReturned) => {
+                this.db.getSubRecord(this.paramData.id).then(res => {
+                    this.paramData.child = res;
+                });
+            });
+            return yield modal.present();
+        });
+    }
+    addChildCategory(item) {
+        return (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__awaiter)(this, void 0, void 0, function* () {
+            const modal = yield this.modalCtrl.create({
+                component: _create_category_create_category_page__WEBPACK_IMPORTED_MODULE_3__.CreateCategoryPage,
+                cssClass: 'addCatModal',
+                componentProps: {
+                    "paramData": item,
+                }
+            });
+            modal.onDidDismiss().then((dataReturned) => {
+                if (dataReturned) {
+                    this.db.getSubRecord(this.paramData.id).then(res => {
+                        this.paramData.child = res;
+                    });
+                }
+            });
+            return yield modal.present();
+        });
+    }
+    onDelete(item) {
+        return (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__awaiter)(this, void 0, void 0, function* () {
+            const alert = yield this.alertController.create({
+                header: 'Confirm!',
+                message: 'Are you sure to delete category !!!',
+                buttons: [
+                    {
+                        text: 'Cancel',
+                        role: 'cancel',
+                        cssClass: 'secondary',
+                        handler: (blah) => {
+                            console.log('Confirm Cancel: blah');
+                        }
+                    }, {
+                        text: 'Yes',
+                        handler: () => {
+                            console.log('Confirm Okay');
+                            this.db.deleteNode(item.id).then(res => {
+                                console.log("res : ", res);
+                                this.db.getSubRecord(this.paramData.id).then(data => {
+                                    console.log("sub record after delete: ", data);
+                                    if (data) {
+                                        this.paramData.child = data;
+                                    }
+                                    else {
+                                        this.modalCtrl.dismiss();
+                                    }
+                                });
+                            });
+                        }
+                    }
+                ]
+            });
+            yield alert.present();
+        });
+    }
+};
+CatDetailsPage.ctorParameters = () => [
+    { type: src_app_services_database_service__WEBPACK_IMPORTED_MODULE_2__.DatabaseService },
+    { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_5__.ModalController },
+    { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_5__.NavParams },
+    { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_5__.AlertController }
+];
+CatDetailsPage = CatDetailsPage_1 = (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__decorate)([
+    (0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.Component)({
+        selector: 'app-cat-details',
+        template: _raw_loader_cat_details_page_html__WEBPACK_IMPORTED_MODULE_0__.default,
+        styles: [_cat_details_page_scss__WEBPACK_IMPORTED_MODULE_1__.default]
+    })
+], CatDetailsPage);
+
+
+
+/***/ }),
+
+/***/ 4520:
+/*!*********************************************************!*\
+  !*** ./src/app/pages/cat-details/cat-details.page.scss ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (".close {\n  font-size: 25px;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImNhdC1kZXRhaWxzLnBhZ2Uuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFDQTtFQUNJLGVBQUE7QUFBSiIsImZpbGUiOiJjYXQtZGV0YWlscy5wYWdlLnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyJcclxuLmNsb3Nle1xyXG4gICAgZm9udC1zaXplOiAyNXB4O1xyXG59Il19 */");
+
+/***/ }),
+
+/***/ 473:
+/*!***********************************************************************************************!*\
+  !*** ./node_modules/raw-loader/dist/cjs.js!./src/app/pages/cat-details/cat-details.page.html ***!
+  \***********************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("<ion-header>\n  <ion-toolbar>\n    <ion-buttons slot=\"start\">\n     <ion-button  (click)=\"onClose()\" class=\"close\"> <ion-icon name=\"arrow-back-outline\"></ion-icon></ion-button>\n    </ion-buttons>\n    <ion-title>{{paramData.name}}</ion-title>\n    <ion-buttons slot=\"end\">\n      <ion-button (click)=\"addChildCategory(paramData)\" class=\"close\" >\n        <ion-icon name=\"add-circle-outline\"></ion-icon>\n    </ion-button>\n    </ion-buttons>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content>\n  \n\n    <ion-list  *ngFor=\"let item of paramData.child\" class=\"parent\"> \n      <ion-item>\n        <ion-label > {{item.name}}</ion-label>   <ion-icon (click)=\"onDelete(item)\" name=\"trash-outline\"></ion-icon> \n        <ion-icon name=\"add-circle-outline\" (click)=\"addChildCategory(item)\"></ion-icon>  \n          <ion-icon slot='end'  *ngIf=\"item.child.length > 0\" name=\"caret-down-outline\"></ion-icon>\n      </ion-item>\n      <ion-list  *ngFor=\"let childItem of item.child\"  class=\"child\"> \n      <ion-item > \n        <ion-label > {{childItem.name}}</ion-label>    <ion-icon (click)=\"onDelete(childItem)\" name=\"trash-outline\"></ion-icon>  \n         <ion-icon (click)=\"addChildCategory(childItem)\" name=\"add-circle-outline\"></ion-icon>      <ion-icon slot='end' (click)=\"openModal(childItem)\" *ngIf=\"childItem.child.length > 0\" name=\"chevron-forward-outline\"></ion-icon>\n      </ion-item>\n      </ion-list>  \n    </ion-list>\n  \n  \n</ion-content>\n");
+
 /***/ })
 
 }]);

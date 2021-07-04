@@ -92,19 +92,27 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "CategoryPage": () => (/* binding */ CategoryPage)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! tslib */ 4762);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! tslib */ 4762);
 /* harmony import */ var _raw_loader_category_page_html__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !raw-loader!./category.page.html */ 3142);
 /* harmony import */ var _category_page_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./category.page.scss */ 8266);
 /* harmony import */ var _services_database_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../../services/database.service */ 4382);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ 7716);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/core */ 7716);
+/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @ionic/angular */ 476);
+/* harmony import */ var _create_category_create_category_page__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../create-category/create-category.page */ 4829);
+/* harmony import */ var _cat_details_cat_details_page__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../cat-details/cat-details.page */ 6060);
+
+
+
 
 
 
 
 
 let CategoryPage = class CategoryPage {
-    constructor(db) {
+    constructor(db, modalCtrl, alertController) {
         this.db = db;
+        this.modalCtrl = modalCtrl;
+        this.alertController = alertController;
     }
     ngOnInit() {
         this.db.getDatabaseState().subscribe(rdy => {
@@ -116,118 +124,103 @@ let CategoryPage = class CategoryPage {
             }
         });
     }
+    ionViewWillEnter() {
+        this.getAllRecord();
+    }
+    getAllRecord() {
+        this.db.getAllRecord().then(res => {
+            console.log("All record : ", res);
+        });
+    }
+    openModal(item) {
+        return (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__awaiter)(this, void 0, void 0, function* () {
+            console.log("item : ", item);
+            const modal = yield this.modalCtrl.create({
+                component: _cat_details_cat_details_page__WEBPACK_IMPORTED_MODULE_4__.CatDetailsPage,
+                componentProps: {
+                    "paramData": item,
+                }
+            });
+            modal.onDidDismiss().then((dataReturned) => {
+                this.db.loadmainCategory();
+            });
+            return yield modal.present();
+        });
+    }
+    addmainCategory() {
+        return (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__awaiter)(this, void 0, void 0, function* () {
+            const modal = yield this.modalCtrl.create({
+                component: _create_category_create_category_page__WEBPACK_IMPORTED_MODULE_3__.CreateCategoryPage,
+                cssClass: 'addCatModal',
+                componentProps: {
+                    "paramData": '',
+                }
+            });
+            modal.onDidDismiss().then((dataReturned) => {
+                if (dataReturned) {
+                    this.db.loadmainCategory();
+                }
+            });
+            return yield modal.present();
+        });
+    }
+    addChildCategory(item) {
+        return (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__awaiter)(this, void 0, void 0, function* () {
+            const modal = yield this.modalCtrl.create({
+                component: _create_category_create_category_page__WEBPACK_IMPORTED_MODULE_3__.CreateCategoryPage,
+                cssClass: 'addCatModal',
+                componentProps: {
+                    "paramData": item,
+                }
+            });
+            modal.onDidDismiss().then((dataReturned) => {
+                if (dataReturned) {
+                    this.db.loadmainCategory();
+                }
+            });
+            return yield modal.present();
+        });
+    }
+    onDelete(item) {
+        return (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__awaiter)(this, void 0, void 0, function* () {
+            const alert = yield this.alertController.create({
+                header: 'Confirm!',
+                message: 'Are you sure to delete category !!!',
+                buttons: [
+                    {
+                        text: 'Cancel',
+                        role: 'cancel',
+                        cssClass: 'secondary',
+                        handler: (blah) => {
+                            console.log('Confirm Cancel: blah');
+                        }
+                    }, {
+                        text: 'Yes',
+                        handler: () => {
+                            console.log('Confirm Okay');
+                            this.db.deleteNode(item.id).then(res => {
+                                this.db.loadmainCategory();
+                            });
+                        }
+                    }
+                ]
+            });
+            yield alert.present();
+        });
+    }
 };
 CategoryPage.ctorParameters = () => [
-    { type: _services_database_service__WEBPACK_IMPORTED_MODULE_2__.DatabaseService }
+    { type: _services_database_service__WEBPACK_IMPORTED_MODULE_2__.DatabaseService },
+    { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_6__.ModalController },
+    { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_6__.AlertController }
 ];
-CategoryPage = (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__decorate)([
-    (0,_angular_core__WEBPACK_IMPORTED_MODULE_4__.Component)({
+CategoryPage = (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__decorate)([
+    (0,_angular_core__WEBPACK_IMPORTED_MODULE_7__.Component)({
         selector: 'app-category',
         template: _raw_loader_category_page_html__WEBPACK_IMPORTED_MODULE_0__.default,
         styles: [_category_page_scss__WEBPACK_IMPORTED_MODULE_1__.default]
     })
 ], CategoryPage);
-
-
-
-/***/ }),
-
-/***/ 4382:
-/*!**********************************************!*\
-  !*** ./src/app/services/database.service.ts ***!
-  \**********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "DatabaseService": () => (/* binding */ DatabaseService)
-/* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! tslib */ 4762);
-/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ionic/angular */ 476);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ 7716);
-/* harmony import */ var _ionic_native_sqlite_porter_ngx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ionic-native/sqlite-porter/ngx */ 5855);
-/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common/http */ 1841);
-/* harmony import */ var _ionic_native_sqlite_ngx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ionic-native/sqlite/ngx */ 283);
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ 6215);
-
-2;
-
-
-
-
-
-
-let DatabaseService = class DatabaseService {
-    constructor(plt, sqlitePorter, sqlite, http) {
-        this.plt = plt;
-        this.sqlitePorter = sqlitePorter;
-        this.sqlite = sqlite;
-        this.http = http;
-        this.dbReady = new rxjs__WEBPACK_IMPORTED_MODULE_2__.BehaviorSubject(false);
-        this.mainCategory = new rxjs__WEBPACK_IMPORTED_MODULE_2__.BehaviorSubject([]);
-        this.plt.ready().then(() => {
-            this.sqlite.create({
-                name: 'database.db',
-                location: 'default'
-            }).then((db) => {
-                this.database = db;
-                this.seedDatabase();
-            });
-        });
-    }
-    seedDatabase() {
-        this.http.get('assets/seed.sql', { responseType: 'text' })
-            .subscribe(sql => {
-            this.sqlitePorter.importSqlToDb(this.database, sql)
-                .then(_ => {
-                this.loadmainCategory();
-                this.dbReady.next(true);
-            })
-                .catch(e => console.error(e));
-        });
-    }
-    getDatabaseState() {
-        return this.dbReady.asObservable();
-    }
-    getmainCategory() {
-        return this.mainCategory.asObservable();
-    }
-    loadmainCategory() {
-        return this.database.executeSql('SELECT * FROM mainCategory', []).then(data => {
-            let categories = [];
-            if (data.rows.length > 0) {
-                for (var i = 0; i < data.rows.length; i++) {
-                    let skills = [];
-                    if (data.rows.item(i).skills != '') {
-                        skills = JSON.parse(data.rows.item(i).skills);
-                    }
-                    categories.push({
-                        id: data.rows.item(i).id,
-                        name: data.rows.item(i).name,
-                    });
-                }
-            }
-            this.mainCategory.next(categories);
-        });
-    }
-    addRecord(tablename, name, skills, img) {
-        let data = [name, JSON.stringify(skills), img];
-        return this.database.executeSql('INSERT INTO' + tablename + '(name) VALUES (?)', data).then(data => {
-        });
-    }
-};
-DatabaseService.ctorParameters = () => [
-    { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_3__.Platform },
-    { type: _ionic_native_sqlite_porter_ngx__WEBPACK_IMPORTED_MODULE_0__.SQLitePorter },
-    { type: _ionic_native_sqlite_ngx__WEBPACK_IMPORTED_MODULE_1__.SQLite },
-    { type: _angular_common_http__WEBPACK_IMPORTED_MODULE_4__.HttpClient }
-];
-DatabaseService = (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__decorate)([
-    (0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.Injectable)({
-        providedIn: 'root'
-    })
-], DatabaseService);
 
 
 
@@ -259,7 +252,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("<ion-header>\n  <ion-toolbar>\n    <ion-title>category</ion-title>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content>\n  <ion-list>\n    <ion-item *ngFor=\"let item of category\">\n      <ion-label > {{item.name}}</ion-label>\n    </ion-item>\n  </ion-list>\n</ion-content>\n");
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("<ion-header>\r\n  <ion-toolbar>\r\n    <ion-title>Category</ion-title>\r\n  </ion-toolbar>\r\n</ion-header>\r\n\r\n<ion-content>\r\n  <ion-button  (click)=\"addmainCategory()\">  <ion-icon  name=\"add-circle-outline\"></ion-icon>  Add Category</ion-button>\r\n  <!-- <ion-button (click)=\"getAllRecord()\"> open modal</ion-button> -->\r\n  <!-- <ng-template #recursiveList let-list>\r\n  <ion-list  *ngFor=\"let item of list\"> \r\n    <ion-item>\r\n      <ion-label > {{item.name}}</ion-label>    \r\n    </ion-item>\r\n    <ion-item *ngIf=\"item.child.length > 0\">\r\n      <ng-container *ngTemplateOutlet=\"recursiveList; context:{ $implicit: item.child }\"></ng-container>\r\n    </ion-item>\r\n  </ion-list>\r\n  </ng-template>\r\n  <ng-container *ngTemplateOutlet=\"recursiveList; context:{ $implicit: category }\"></ng-container>\r\n   -->\r\n\r\n<!-- \r\n   <ul>\r\n    <ng-template #recursiveList let-list>\r\n      <li *ngFor=\"let item of list\">\r\n        {{item.name}}\r\n        <ul *ngIf=\"item.child.length > 0\">\r\n          <ng-container *ngTemplateOutlet=\"recursiveList; context:{ $implicit: item.child }\"></ng-container>\r\n        </ul>\r\n      </li>\r\n    </ng-template>\r\n    <ng-container *ngTemplateOutlet=\"recursiveList; context:{ $implicit: category }\"></ng-container>\r\n  </ul> -->\r\n  \r\n  <!-- <ul>\r\n    <ng-template #recursiveList let-list>\r\n      <li *ngFor=\"let item of list\">\r\n        {{item.name}}\r\n        <ul *ngIf=\"item.child.length > 0\">\r\n          <ng-container *ngTemplateOutlet=\"recursiveList; context:{ $implicit: item.child }\"></ng-container>\r\n        </ul>\r\n      </li>\r\n    </ng-template>\r\n    <ng-container *ngTemplateOutlet=\"recursiveList; context:{ $implicit: category }\"></ng-container>\r\n  </ul> -->\r\n  \r\n  <ion-list  *ngFor=\"let item of category\" class=\"parent\"> \r\n    <ion-item>\r\n      <ion-label > {{item.name}}</ion-label>   <ion-icon (click)=\"onDelete(item)\" name=\"trash-outline\"></ion-icon> \r\n      <ion-icon name=\"add-circle-outline\" (click)=\"addChildCategory(item)\"></ion-icon>  \r\n        <ion-icon slot='end'  *ngIf=\"item.child.length > 0\" name=\"caret-down-outline\"></ion-icon>\r\n    </ion-item>\r\n    <ion-list  *ngFor=\"let childItem of item.child\"  class=\"child\"> \r\n    <ion-item > \r\n      <ion-label > {{childItem.name}}</ion-label>    <ion-icon (click)=\"onDelete(childItem)\" name=\"trash-outline\"></ion-icon>  \r\n       <ion-icon (click)=\"addChildCategory(childItem)\" name=\"add-circle-outline\"></ion-icon>      <ion-icon slot='end' (click)=\"openModal(childItem)\" *ngIf=\"childItem.child.length > 0\" name=\"chevron-forward-outline\"></ion-icon>\r\n    </ion-item>\r\n    </ion-list>  \r\n  </ion-list>\r\n\r\n\r\n \r\n</ion-content>\r\n");
 
 /***/ })
 

@@ -24,3 +24,36 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+
+ion-header{
+    ion-toolbar{
+        text-align: center;
+    }
+}
+.addCatModal{
+    // height: 60%;
+    // width: 80%;
+    // top:30%;
+    // left:10%
+    padding-top: 20%;
+    padding-bottom: 20%;
+    padding-right: 5%;
+    padding-left: 5%;
+}
+
+
+.parent{
+    ion-item{
+        // --background: antiquewhite;
+        --background: aquamarine;
+    }
+}
+
+.child{
+    ion-item{
+        --background: antiquewhite;
+        // --background: aquamarine;
+    }
+}
+

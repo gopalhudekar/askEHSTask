@@ -1233,5 +1233,20 @@ sub {
 .ion-align-items-baseline {
   align-items: baseline !important;
 }
+ion-header ion-toolbar {
+  text-align: center;
+}
+.addCatModal {
+  padding-top: 20%;
+  padding-bottom: 20%;
+  padding-right: 5%;
+  padding-left: 5%;
+}
+.parent ion-item {
+  --background: aquamarine;
+}
+.child ion-item {
+  --background: antiquewhite;
+}
 
 /*# sourceMappingURL=styles.css.map*/
